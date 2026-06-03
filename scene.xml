@@ -1,0 +1,37 @@
+<mujoco model="ur3e_rg2_scene">
+  <include file="ur3e_rg2.xml"/>
+
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast"
+          cone="elliptic" impratio="10"/>
+
+  <asset>
+    <material name="floor_mat" rgba="0.35 0.37 0.39 1"/>
+    <material name="cube_red" rgba="0.9 0.05 0.03 1"/>
+  </asset>
+
+  <worldbody>
+    <light name="key_light" pos="0 -1.2 2.0" dir="0 0 -1" diffuse="0.8 0.8 0.8"/>
+    <geom name="floor" type="plane" size="2 2 0.01" material="floor_mat"/>
+    <body name="red_cube" pos="0 -0.35 0.02">
+      <freejoint name="red_cube_freejoint"/>
+      <geom name="red_cube_geom" type="box" size="0.02 0.02 0.02" mass="0.05"
+            material="cube_red" friction="0.8 0.01 0.001"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="shoulder_pan" joint="shoulder_pan_joint" kp="500" kv="50" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="shoulder_lift" joint="shoulder_lift_joint" kp="500" kv="50" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="elbow" joint="elbow_joint" kp="500" kv="50" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="wrist_1" joint="wrist_1_joint" kp="200" kv="20" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="wrist_2" joint="wrist_2_joint" kp="200" kv="20" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="wrist_3" joint="wrist_3_joint" kp="200" kv="20" ctrlrange="-6.2832 6.2832" ctrllimited="true"/>
+    <position name="gripper" joint="left_driver_joint" kp="20" kv="2" ctrlrange="0 0.8" ctrllimited="true"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home"
+         qpos="0 -1.5708 1.7 -1.5708 -1.5708 0 0 0 0 0 0 0 0 -0.35 0.02 1 0 0 0"
+         ctrl="0 -1.5708 1.7 -1.5708 -1.5708 0 0"/>
+  </keyframe>
+</mujoco>

@@ -1,0 +1,206 @@
+<mujoco model="ur3e_rg2">
+  <compiler angle="radian" autolimits="true"/>
+
+  <asset>
+    <material name="ur_grey" rgba="0.68 0.68 0.66 1"/>
+    <material name="rg2_silver" rgba="0.72 0.72 0.70 1"/>
+    <material name="rg2_dark" rgba="0.05 0.05 0.05 1"/>
+
+    <mesh name="ur3e_base_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/base.stl"/>
+    <mesh name="ur3e_shoulder_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/shoulder.stl"/>
+    <mesh name="ur3e_upperarm_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/upperarm.stl"/>
+    <mesh name="ur3e_forearm_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/forearm.stl"/>
+    <mesh name="ur3e_wrist1_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/wrist1.stl"/>
+    <mesh name="ur3e_wrist2_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/wrist2.stl"/>
+    <mesh name="ur3e_wrist3_collision" file="external/Universal_Robots_ROS2_Description/meshes/ur3e/collision/wrist3.stl"/>
+
+    <mesh name="ur3e_base_visual" file="meshes/ur3e/visual/base.obj"/>
+    <mesh name="ur3e_shoulder_visual" file="meshes/ur3e/visual/shoulder.obj"/>
+    <mesh name="ur3e_upperarm_visual" file="meshes/ur3e/visual/upperarm.obj"/>
+    <mesh name="ur3e_forearm_visual" file="meshes/ur3e/visual/forearm.obj"/>
+    <mesh name="ur3e_wrist1_visual" file="meshes/ur3e/visual/wrist1.obj"/>
+    <mesh name="ur3e_wrist2_visual" file="meshes/ur3e/visual/wrist2.obj"/>
+    <mesh name="ur3e_wrist3_visual" file="meshes/ur3e/visual/wrist3.obj"/>
+
+    <mesh name="rg2_base_link_collision" file="external/OnRobot_ROS2_Description/meshes/rg2/collision/base_link.stl"/>
+    <mesh name="rg2_outer_knuckle_collision" file="external/OnRobot_ROS2_Description/meshes/rg2/collision/outer_knuckle.stl"/>
+    <mesh name="rg2_inner_knuckle_collision" file="external/OnRobot_ROS2_Description/meshes/rg2/collision/inner_knuckle.stl"/>
+    <mesh name="rg2_inner_finger_collision" file="external/OnRobot_ROS2_Description/meshes/rg2/collision/inner_finger.stl"/>
+
+    <mesh name="rg2_base_link_visual" file="external/OnRobot_ROS2_Description/meshes/rg2/visual/base_link.stl"/>
+    <mesh name="rg2_outer_knuckle_visual" file="external/OnRobot_ROS2_Description/meshes/rg2/visual/outer_knuckle.stl"/>
+    <mesh name="rg2_inner_knuckle_visual" file="external/OnRobot_ROS2_Description/meshes/rg2/visual/inner_knuckle.stl"/>
+    <mesh name="rg2_inner_finger_visual" file="external/OnRobot_ROS2_Description/meshes/rg2/visual/inner_finger.stl"/>
+  </asset>
+
+  <default>
+    <joint type="hinge" damping="1" armature="0.01"/>
+    <geom friction="0.8 0.01 0.001"/>
+    <default class="ur_collision">
+      <geom type="mesh" group="3" contype="1" conaffinity="1" friction="0.8 0.01 0.001" rgba="0.1 0.4 1 0.25"/>
+    </default>
+    <default class="ur_visual">
+      <geom type="mesh" group="1" contype="0" conaffinity="0" material="ur_grey"/>
+    </default>
+    <default class="rg2_visual">
+      <geom type="mesh" group="1" contype="0" conaffinity="0"/>
+    </default>
+    <default class="rg2_collision">
+      <geom type="mesh" group="3" contype="1" conaffinity="1" friction="0.8 0.01 0.001" rgba="1 0.6 0.1 0.25"/>
+    </default>
+    <default class="rg2_driver_joint">
+      <joint type="hinge" axis="-1 0 0" range="0 0.8" armature="0.005" damping="0.1"
+             solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+    </default>
+    <default class="rg2_passive_joint">
+      <joint type="hinge" axis="-1 0 0" armature="0.001" damping="0.05"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <body name="base_link" quat="0 0 0 1">
+      <body name="base_link_inertia" quat="0 0 0 1">
+        <inertial pos="0 0 0" mass="2.0" diaginertia="0.003 0.003 0.0056"/>
+        <geom name="base_visual" mesh="ur3e_base_visual" quat="0 0 0 1" class="ur_visual"/>
+        <geom name="base_collision" mesh="ur3e_base_collision" quat="0 0 0 1" class="ur_collision"/>
+
+        <body name="shoulder_link" pos="0 0 0.15185">
+          <joint name="shoulder_pan_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+          <inertial pos="0 0 -0.02" euler="1.570796326794897 0 0" mass="1.98"
+                    diaginertia="0.0027657 0.0021501 0.0025626"/>
+          <geom name="shoulder_visual" mesh="ur3e_shoulder_visual" quat="0 0 0 1" class="ur_visual"/>
+          <geom name="shoulder_collision" mesh="ur3e_shoulder_collision" quat="0 0 0 1" class="ur_collision"/>
+
+          <body name="upper_arm_link" quat="0.707107 0.707107 0 0">
+            <joint name="shoulder_lift_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+            <inertial pos="-0.11355 0 0.1157" mass="3.4445" diaginertia="0.0042623 0.0460284 0.0448947"/>
+            <geom name="upperarm_visual" mesh="ur3e_upperarm_visual" pos="0 0 0.120" quat="0.5 0.5 -0.5 -0.5" class="ur_visual"/>
+            <geom name="upperarm_collision" mesh="ur3e_upperarm_collision" pos="0 0 0.120" quat="0.5 0.5 -0.5 -0.5" class="ur_collision"/>
+
+            <body name="forearm_link" pos="-0.24355 0 0">
+              <joint name="elbow_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+              <inertial pos="-0.1632 0 0.0238" mass="1.437" diaginertia="0.0010511 0.0113396 0.0110895"/>
+              <geom name="forearm_visual" mesh="ur3e_forearm_visual" pos="0 0 0.027" quat="0.5 0.5 -0.5 -0.5" class="ur_visual"/>
+              <geom name="forearm_collision" mesh="ur3e_forearm_collision" pos="0 0 0.027" quat="0.5 0.5 -0.5 -0.5" class="ur_collision"/>
+
+              <body name="wrist_1_link" pos="-0.2132 0 0.13105">
+                <joint name="wrist_1_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+                <inertial pos="0 -0.01 0" euler="1.570796326794897 0 0" mass="0.871"
+                          diaginertia="0.0008174 0.0006844 0.0005497"/>
+                <geom name="wrist1_visual" mesh="ur3e_wrist1_visual" pos="0 0 -0.104" quat="0.707107 0.707107 0 0" class="ur_visual"/>
+                <geom name="wrist1_collision" mesh="ur3e_wrist1_collision" pos="0 0 -0.104" quat="0.707107 0.707107 0 0" class="ur_collision"/>
+
+                <body name="wrist_2_link" pos="0 -0.08535 0" quat="0.707107 0.707107 0 0">
+                  <joint name="wrist_2_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+                  <inertial pos="0 0.01 0" euler="-1.570796326794897 0 0" mass="0.805"
+                            diaginertia="0.0006059 0.0005837 0.0003831"/>
+                  <geom name="wrist2_visual" mesh="ur3e_wrist2_visual" pos="0 0 -0.08535" quat="1 0 0 0" class="ur_visual"/>
+                  <geom name="wrist2_collision" mesh="ur3e_wrist2_collision" pos="0 0 -0.08535" quat="1 0 0 0" class="ur_collision"/>
+
+                  <body name="wrist_3_link" pos="0 0.0921 0" quat="0.707107 -0.707107 0 0">
+                    <joint name="wrist_3_joint" axis="0 0 1" range="-6.2832 6.2832"/>
+                    <inertial pos="0 0 -0.02" mass="0.261" diaginertia="0.0001080 0.0001086 0.0001371"/>
+                    <geom name="wrist3_visual" mesh="ur3e_wrist3_visual" pos="0 0 -0.0921" quat="0.707107 0.707107 0 0" class="ur_visual"/>
+                    <geom name="wrist3_collision" mesh="ur3e_wrist3_collision" pos="0 0 -0.0921" quat="0.707107 0.707107 0 0" class="ur_collision"/>
+
+                    <body name="ft_frame" quat="0 1 0 0"/>
+                    <body name="flange" quat="0.5 -0.5 -0.5 -0.5">
+                      <body name="tool0" quat="0.5 0.5 0.5 0.5">
+                        <body name="rg2_base_link">
+                          <inertial pos="0 0 0.06" mass="0.78" diaginertia="0.0010 0.0010 0.0010"/>
+                          <geom name="rg2_base_link_visual" mesh="rg2_base_link_visual" material="rg2_silver" class="rg2_visual"/>
+                          <geom name="rg2_base_link_collision" mesh="rg2_base_link_collision" class="rg2_collision"/>
+
+                          <body name="left_outer_knuckle" pos="0 -0.017178 0.125797">
+                            <joint name="left_driver_joint" class="rg2_driver_joint"/>
+                            <inertial pos="0 -0.018 0.015" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                            <geom name="left_outer_knuckle_visual" mesh="rg2_outer_knuckle_visual" material="rg2_silver" class="rg2_visual"/>
+                            <geom name="left_outer_knuckle_collision" mesh="rg2_outer_knuckle_collision" class="rg2_collision"/>
+
+                            <body name="left_inner_finger" pos="0 -0.039592 0.038177">
+                              <joint name="left_inner_finger_joint" class="rg2_passive_joint" range="-0.8 0"/>
+                              <inertial pos="0 0.008 0.025" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                              <geom name="left_inner_finger_visual" mesh="rg2_inner_finger_visual" material="rg2_dark" class="rg2_visual"/>
+                              <geom name="left_inner_finger_collision" mesh="rg2_inner_finger_collision" class="rg2_collision"/>
+                            </body>
+                          </body>
+
+                          <body name="left_inner_knuckle" pos="0 -0.007678 0.142297">
+                            <joint name="left_inner_knuckle_joint" class="rg2_passive_joint" range="0 0.8"/>
+                            <inertial pos="0 -0.018 0.015" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                            <geom name="left_inner_knuckle_visual" mesh="rg2_inner_knuckle_visual" material="rg2_silver" class="rg2_visual"/>
+                            <geom name="left_inner_knuckle_collision" mesh="rg2_inner_knuckle_collision" class="rg2_collision"/>
+                          </body>
+
+                          <body name="right_outer_knuckle" pos="0 0.017178 0.125797" quat="0 0 0 1">
+                            <joint name="right_driver_joint" class="rg2_driver_joint"/>
+                            <inertial pos="0 -0.018 0.015" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                            <geom name="right_outer_knuckle_visual" mesh="rg2_outer_knuckle_visual" material="rg2_silver" class="rg2_visual"/>
+                            <geom name="right_outer_knuckle_collision" mesh="rg2_outer_knuckle_collision" class="rg2_collision"/>
+
+                            <body name="right_inner_finger" pos="0 -0.039592 0.038177">
+                              <joint name="right_inner_finger_joint" class="rg2_passive_joint" range="-0.8 0"/>
+                              <inertial pos="0 0.008 0.025" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                              <geom name="right_inner_finger_visual" mesh="rg2_inner_finger_visual" material="rg2_dark" class="rg2_visual"/>
+                              <geom name="right_inner_finger_collision" mesh="rg2_inner_finger_collision" class="rg2_collision"/>
+                            </body>
+                          </body>
+
+                          <body name="right_inner_knuckle" pos="0 0.007678 0.142297" quat="0 0 0 1">
+                            <joint name="right_inner_knuckle_joint" class="rg2_passive_joint" range="0 0.8"/>
+                            <inertial pos="0 -0.018 0.015" mass="0.05" diaginertia="0.00002 0.00002 0.00002"/>
+                            <geom name="right_inner_knuckle_visual" mesh="rg2_inner_knuckle_visual" material="rg2_silver" class="rg2_visual"/>
+                            <geom name="right_inner_knuckle_collision" mesh="rg2_inner_knuckle_collision" class="rg2_collision"/>
+                          </body>
+
+                          <body name="gripper_tcp" pos="0 0 0.218"/>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <equality>
+    <joint name="right_driver_mimic" joint1="right_driver_joint" joint2="left_driver_joint" polycoef="0 1 0 0 0"/>
+    <joint name="left_inner_knuckle_mimic" joint1="left_inner_knuckle_joint" joint2="left_driver_joint" polycoef="0 1 0 0 0"/>
+    <joint name="right_inner_knuckle_mimic" joint1="right_inner_knuckle_joint" joint2="right_driver_joint" polycoef="0 1 0 0 0"/>
+    <joint name="left_inner_finger_mimic" joint1="left_inner_finger_joint" joint2="left_driver_joint" polycoef="0 -1 0 0 0"/>
+    <joint name="right_inner_finger_mimic" joint1="right_inner_finger_joint" joint2="right_driver_joint" polycoef="0 -1 0 0 0"/>
+  </equality>
+
+  <contact>
+    <exclude body1="base_link_inertia" body2="shoulder_link"/>
+    <exclude body1="shoulder_link" body2="upper_arm_link"/>
+    <exclude body1="upper_arm_link" body2="forearm_link"/>
+    <exclude body1="forearm_link" body2="wrist_1_link"/>
+    <exclude body1="wrist_1_link" body2="wrist_2_link"/>
+    <exclude body1="wrist_2_link" body2="wrist_3_link"/>
+    <exclude body1="wrist_3_link" body2="rg2_base_link"/>
+    <exclude body1="rg2_base_link" body2="left_outer_knuckle"/>
+    <exclude body1="rg2_base_link" body2="right_outer_knuckle"/>
+    <exclude body1="rg2_base_link" body2="left_inner_knuckle"/>
+    <exclude body1="rg2_base_link" body2="right_inner_knuckle"/>
+    <exclude body1="left_outer_knuckle" body2="left_inner_finger"/>
+    <exclude body1="right_outer_knuckle" body2="right_inner_finger"/>
+    <exclude body1="left_outer_knuckle" body2="left_inner_knuckle"/>
+    <exclude body1="right_outer_knuckle" body2="right_inner_knuckle"/>
+    <exclude body1="left_inner_knuckle" body2="left_inner_finger"/>
+    <exclude body1="right_inner_knuckle" body2="right_inner_finger"/>
+    <exclude body1="left_inner_finger" body2="right_inner_finger"/>
+    <exclude body1="left_inner_finger" body2="right_inner_knuckle"/>
+    <exclude body1="right_inner_finger" body2="left_inner_knuckle"/>
+    <exclude body1="left_inner_knuckle" body2="right_inner_knuckle"/>
+    <exclude body1="left_outer_knuckle" body2="right_inner_knuckle"/>
+    <exclude body1="right_outer_knuckle" body2="left_inner_knuckle"/>
+    <exclude body1="left_outer_knuckle" body2="right_inner_finger"/>
+    <exclude body1="right_outer_knuckle" body2="left_inner_finger"/>
+    <exclude body1="left_outer_knuckle" body2="right_outer_knuckle"/>
+  </contact>
+</mujoco>

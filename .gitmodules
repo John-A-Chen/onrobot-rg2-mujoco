@@ -1,0 +1,8 @@
+[submodule "external/Universal_Robots_ROS2_Description"]
+	path = external/Universal_Robots_ROS2_Description
+	url = https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
+	branch = humble
+[submodule "external/OnRobot_ROS2_Description"]
+	path = external/OnRobot_ROS2_Description
+	url = https://github.com/tonydle/OnRobot_ROS2_Description.git
+	branch = main
